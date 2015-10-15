@@ -1,6 +1,6 @@
 # Amaranth
 
-TODO: Write gem description here
+Library for accessing the Amara REST API.
 
 ## Installation
 

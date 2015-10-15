@@ -9,8 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Micah Geisel"]
   spec.email         = ["micah@botandrose.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = "Library for accessing the Amara REST API"
   spec.homepage      = "https://github.com/botandrose/amaranth"
   spec.license       = "MIT"
 
