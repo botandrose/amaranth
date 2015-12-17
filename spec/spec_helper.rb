@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'amaranth'
+require 'byebug'
 
 RSpec.configure do |config|
   config.mock_with(:rspec) { |c| c.syntax = :should }
