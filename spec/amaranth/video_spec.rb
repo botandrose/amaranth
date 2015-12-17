@@ -94,6 +94,63 @@ describe Amaranth::Video do
       end
     end
 
+    describe ".create_or_update_by_video_url" do
+      it "updates an existing video if it exists" do
+        stub_request(:post, "http://www.amara.org/api/videos/")
+          .with(body: JSON.dump({
+            "title":"updated title",
+            "description":"updated description",
+            "video_url":"http://youtu.be/3f7l-Z4NF70",
+          }))
+          .to_return(status: 400, body: "Video already exists for http://youtu.be/3f7l-Z4NF70")
+
+        stub_request(:get, "http://www.amara.org/api/videos/?video_url=http://youtu.be/3f7l-Z4NF70")
+          .to_return(status: 200, body: JSON.dump(
+            {"objects":[{
+              "id":"LrHZMMHioQHN",
+              "title":"test title",
+              "description":"test description",
+              "duration":300,
+              "primary_audio_language_code":"fr",
+              "thumbnail":"https://i.ytimg.com/vi/3f7l-Z4NF70/default.jpg",
+              "team":nil,
+              "project":nil,
+            }]}))
+
+        stub_request(:put, "http://www.amara.org/api/videos/LrHZMMHioQHN/")
+          .with(body: JSON.dump({
+            "id":"LrHZMMHioQHN",
+            "title":"updated title",
+            "description":"updated description",
+            "duration":300,
+            "primary_audio_language_code":"fr",
+            "thumbnail":"https://i.ytimg.com/vi/3f7l-Z4NF70/default.jpg",
+            "team":nil,
+            "project":nil,
+          }))
+
+        described_class.create_or_update_by_video_url("http://youtu.be/3f7l-Z4NF70", {
+          title: "updated title",
+          description: "updated description",
+        })
+      end
+
+      it "creates a new video if it doesn't exist" do
+        stub_request(:post, "http://www.amara.org/api/videos/")
+          .with(body: JSON.dump({
+            "title":"updated title",
+            "description":"updated description",
+            "video_url":"http://youtu.be/3f7l-Z4NF70",
+          }))
+          .to_return(status: 201)
+
+        described_class.create_or_update_by_video_url("http://youtu.be/3f7l-Z4NF70", {
+          title: "updated title",
+          description: "updated description",
+        })
+      end
+    end
+
     describe "#update" do
       it "updates the supplied attributes and then persists" do
         stub_request(:put, "http://www.amara.org/api/videos/LrHZMMHioQHN/")
