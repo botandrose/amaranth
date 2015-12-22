@@ -66,10 +66,17 @@ module Amaranth
     private
 
     READONLY_ATTRIBUTES = %i(all_urls languages)
+    OMIT_IF_BLANK_ATTRIBUTES = %i(duration)
 
     def save_existing
-      attributes = to_h.delete_if { |key, _| READONLY_ATTRIBUTES.include?(key) }
+      attributes = to_h
+      attributes.reject! { |key, value| READONLY_ATTRIBUTES.include?(key) }
+      attributes.reject! { |key, value| OMIT_IF_BLANK_ATTRIBUTES.include?(key) && blank?(value) }
       Request.put("/api/videos/#{id}/", attributes)
+    end
+
+    def blank? value
+      value.to_s.strip == ""
     end
   end
 end
