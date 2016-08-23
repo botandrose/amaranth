@@ -6,22 +6,24 @@ module Amaranth
     before do
       stub_request(:get, "http://www.amara.org/api/teams/ce-mac-test/projects/")
         .to_return(body: <<-JSON)
-          [{"name": "Introduction to Complexity",
-           "slug": "introduction-to-complexity",
-           "description": "",
-           "guidelines": null,
-           "modified": "2015-08-05T01:27:11Z",
-           "created": "2015-08-05T01:27:11Z",
-           "workflow_enabled": false,
-           "resource_uri": "http://www.amara.org/api/teams/complexity-explorer/projects/introduction-to-complexity/"
-          },{"name": "Chaos and Dynamical Systems",
-           "slug": "chaos-and-dynamical-systems",
-           "description": "",
-           "guidelines": null,
-           "modified": "2015-08-05T01:27:30Z",
-           "created": "2015-08-05T01:27:30Z",
-           "workflow_enabled": false,
-           "resource_uri": "http://www.amara.org/api/teams/complexity-explorer/projects/chaos-and-dynamical-systems/"}]
+          {"meta": {"previous": null, "next": null, "offset": 0, "limit": 20, "total_count": 7},
+           "objects":
+            [{"name": "Introduction to Complexity",
+             "slug": "introduction-to-complexity",
+             "description": "",
+             "guidelines": null,
+             "modified": "2015-08-05T01:27:11Z",
+             "created": "2015-08-05T01:27:11Z",
+             "workflow_enabled": false,
+             "resource_uri": "http://www.amara.org/api/teams/complexity-explorer/projects/introduction-to-complexity/"
+            },{"name": "Chaos and Dynamical Systems",
+             "slug": "chaos-and-dynamical-systems",
+             "description": "",
+             "guidelines": null,
+             "modified": "2015-08-05T01:27:30Z",
+             "created": "2015-08-05T01:27:30Z",
+             "workflow_enabled": false,
+             "resource_uri": "http://www.amara.org/api/teams/complexity-explorer/projects/chaos-and-dynamical-systems/"}]}
         JSON
     end
 
