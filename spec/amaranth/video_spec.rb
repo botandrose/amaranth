@@ -60,12 +60,12 @@ describe Amaranth::Video do
 
     describe ".create" do
       it "creates a video with attributes" do
-        stub_request(:post, "http://www.amara.org/api/videos/")
-          .with(body: %({"video_url":"http://youtu.be/3f7l-Z4NF70","primary_audio_language_code":"en","team":"ce-mac-test","project":"test-project"}))
+        stub_request(:post, "https://www.amara.org/api/videos/")
+          .with(body: %({"video_url":"https://youtu.be/3f7l-Z4NF70","primary_audio_language_code":"en","team":"ce-mac-test","project":"test-project"}))
           .to_return(status: 201)
 
         described_class.create({
-          video_url: "http://youtu.be/3f7l-Z4NF70",
+          video_url: "https://youtu.be/3f7l-Z4NF70",
           primary_audio_language_code: "en",
           team: "ce-mac-test",
           project: "test-project",
@@ -75,20 +75,20 @@ describe Amaranth::Video do
 
     describe ".find_by_video_url" do
       it "returns a Video for the url if one is found" do
-        stub_request(:get, "http://www.amara.org/api/videos/?video_url=http://youtu.be/3f7l-Z4NF70")
-          .to_return(body: %({"meta":{"previous":null,"next":null,"offset":0,"limit":20,"total_count":1},"objects":[{"id":"LrHZMMHioQHN","video_type":"Y","primary_audio_language_code":"en","original_language":"en","title":"Canon EOS 550D DSLR Camera - Sample video - Canon","description":"A sample video from the new Canon 550D DSLR camera, shot at 1920x1080 resolution (30fps) and optimised for YouTube. Offering Full HD movie recording with manual control and selectable frame rates, the EOS 550D allows you to capture your images and videos in stunning detail. Find out more about the 550D here: http://bit.ly/R4e9MB","duration":194,"thumbnail":"https://i.ytimg.com/vi/3f7l-Z4NF70/hqdefault.jpg","created":"2015-10-13T22:40:02Z","team":null,"project":null,"all_urls":["http://www.youtube.com/watch?v=3f7l-Z4NF70"],"metadata":{},"languages":[],"resource_uri":"http://www.amara.org/api/videos/LrHZMMHioQHN/"}]}))
+        stub_request(:get, "https://www.amara.org/api/videos/?video_url=https://youtu.be/3f7l-Z4NF70")
+          .to_return(body: %({"meta":{"previous":null,"next":null,"offset":0,"limit":20,"total_count":1},"objects":[{"id":"LrHZMMHioQHN","video_type":"Y","primary_audio_language_code":"en","original_language":"en","title":"Canon EOS 550D DSLR Camera - Sample video - Canon","description":"A sample video from the new Canon 550D DSLR camera, shot at 1920x1080 resolution (30fps) and optimised for YouTube. Offering Full HD movie recording with manual control and selectable frame rates, the EOS 550D allows you to capture your images and videos in stunning detail. Find out more about the 550D here: https://bit.ly/R4e9MB","duration":194,"thumbnail":"https://i.ytimg.com/vi/3f7l-Z4NF70/hqdefault.jpg","created":"2015-10-13T22:40:02Z","team":null,"project":null,"all_urls":["https://www.youtube.com/watch?v=3f7l-Z4NF70"],"metadata":{},"languages":[],"resource_uri":"https://www.amara.org/api/videos/LrHZMMHioQHN/"}]}))
 
-        video = described_class.find_by_video_url "http://youtu.be/3f7l-Z4NF70"
+        video = described_class.find_by_video_url "https://youtu.be/3f7l-Z4NF70"
         video.should == Amaranth::Video.new({
           "id"=>"LrHZMMHioQHN",
           "title"=>"Canon EOS 550D DSLR Camera - Sample video - Canon",
-          "description"=>"A sample video from the new Canon 550D DSLR camera, shot at 1920x1080 resolution (30fps) and optimised for YouTube. Offering Full HD movie recording with manual control and selectable frame rates, the EOS 550D allows you to capture your images and videos in stunning detail. Find out more about the 550D here: http://bit.ly/R4e9MB",
+          "description"=>"A sample video from the new Canon 550D DSLR camera, shot at 1920x1080 resolution (30fps) and optimised for YouTube. Offering Full HD movie recording with manual control and selectable frame rates, the EOS 550D allows you to capture your images and videos in stunning detail. Find out more about the 550D here: https://bit.ly/R4e9MB",
           "duration"=>194,
           "primary_audio_language_code"=>"en",
           "thumbnail"=>"https://i.ytimg.com/vi/3f7l-Z4NF70/hqdefault.jpg",
           "team"=>nil,
           "project"=>nil,
-          "all_urls" => ["http://www.youtube.com/watch?v=3f7l-Z4NF70"],
+          "all_urls" => ["https://www.youtube.com/watch?v=3f7l-Z4NF70"],
           "languages"=>[],
         })
       end
@@ -96,15 +96,15 @@ describe Amaranth::Video do
 
     describe ".create_or_update_by_video_url" do
       it "updates an existing video if it exists" do
-        stub_request(:post, "http://www.amara.org/api/videos/")
+        stub_request(:post, "https://www.amara.org/api/videos/")
           .with(body: JSON.dump({
             "title":"updated title",
             "description":"updated description",
-            "video_url":"http://youtu.be/3f7l-Z4NF70",
+            "video_url":"https://youtu.be/3f7l-Z4NF70",
           }))
-          .to_return(status: 400, body: "Video already exists for http://youtu.be/3f7l-Z4NF70")
+          .to_return(status: 400, body: "Video already exists for https://youtu.be/3f7l-Z4NF70")
 
-        stub_request(:get, "http://www.amara.org/api/videos/?video_url=http://youtu.be/3f7l-Z4NF70")
+        stub_request(:get, "https://www.amara.org/api/videos/?video_url=https://youtu.be/3f7l-Z4NF70")
           .to_return(status: 200, body: JSON.dump(
             {"objects":[{
               "id":"LrHZMMHioQHN",
@@ -117,7 +117,7 @@ describe Amaranth::Video do
               "project":nil,
             }]}))
 
-        stub_request(:put, "http://www.amara.org/api/videos/LrHZMMHioQHN/")
+        stub_request(:put, "https://www.amara.org/api/videos/LrHZMMHioQHN/")
           .with(body: JSON.dump({
             "id":"LrHZMMHioQHN",
             "title":"updated title",
@@ -129,22 +129,22 @@ describe Amaranth::Video do
             "project":nil,
           }))
 
-        described_class.create_or_update_by_video_url("http://youtu.be/3f7l-Z4NF70", {
+        described_class.create_or_update_by_video_url("https://youtu.be/3f7l-Z4NF70", {
           title: "updated title",
           description: "updated description",
         })
       end
 
       it "creates a new video if it doesn't exist" do
-        stub_request(:post, "http://www.amara.org/api/videos/")
+        stub_request(:post, "https://www.amara.org/api/videos/")
           .with(body: JSON.dump({
             "title":"updated title",
             "description":"updated description",
-            "video_url":"http://youtu.be/3f7l-Z4NF70",
+            "video_url":"https://youtu.be/3f7l-Z4NF70",
           }))
           .to_return(status: 201)
 
-        described_class.create_or_update_by_video_url("http://youtu.be/3f7l-Z4NF70", {
+        described_class.create_or_update_by_video_url("https://youtu.be/3f7l-Z4NF70", {
           title: "updated title",
           description: "updated description",
         })
@@ -153,19 +153,19 @@ describe Amaranth::Video do
 
     describe "#update" do
       it "updates the supplied attributes and then persists" do
-        stub_request(:put, "http://www.amara.org/api/videos/LrHZMMHioQHN/")
+        stub_request(:put, "https://www.amara.org/api/videos/LrHZMMHioQHN/")
           .with(body: %({"id":"LrHZMMHioQHN","title":"test title","description":"test description","duration":300,"primary_audio_language_code":"fr","thumbnail":"https://i.ytimg.com/vi/3f7l-Z4NF70/default.jpg","team":"ce-mac-test","project":"example-course"}))
 
         video = Amaranth::Video.new({
           "id"=>"LrHZMMHioQHN",
           "title"=>"Canon EOS 550D DSLR Camera - Sample video - Canon",
-          "description"=>"A sample video from the new Canon 550D DSLR camera, shot at 1920x1080 resolution (30fps) and optimised for YouTube. Offering Full HD movie recording with manual control and selectable frame rates, the EOS 550D allows you to capture your images and videos in stunning detail. Find out more about the 550D here: http://bit.ly/R4e9MB",
+          "description"=>"A sample video from the new Canon 550D DSLR camera, shot at 1920x1080 resolution (30fps) and optimised for YouTube. Offering Full HD movie recording with manual control and selectable frame rates, the EOS 550D allows you to capture your images and videos in stunning detail. Find out more about the 550D here: https://bit.ly/R4e9MB",
           "duration"=>194,
           "primary_audio_language_code"=>"en",
           "thumbnail"=>"https://i.ytimg.com/vi/3f7l-Z4NF70/hqdefault.jpg",
           "team"=>nil,
           "project"=>nil,
-          "all_urls" => ["http://www.youtube.com/watch?v=3f7l-Z4NF70"],
+          "all_urls" => ["https://www.youtube.com/watch?v=3f7l-Z4NF70"],
           "languages"=>[],
         })
         video.update({

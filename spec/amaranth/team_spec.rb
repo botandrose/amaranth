@@ -4,11 +4,11 @@ require "webmock/rspec"
 describe Amaranth::Team do
   describe ".find_by_slug" do
     it "retrieves a team by its slug" do
-      stub_request(:get, "http://www.amara.org/api/teams/complexity-explorer/")
+      stub_request(:get, "https://www.amara.org/api/teams/complexity-explorer/")
         .to_return(body: <<-JSON)
        {"name": "Complexity Explorer",
         "slug": "complexity-explorer",
-        "description": "Subtitling Quickstart Guide: http://bit.ly/1JmWJEv",
+        "description": "Subtitling Quickstart Guide: https://bit.ly/1JmWJEv",
         "is_visible": true,
         "membership_policy": "Application",
         "video_policy": "Admins only"}
