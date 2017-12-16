@@ -27,7 +27,7 @@ module Amaranth
     end
 
     def self.request req, body = nil
-      Net::HTTP.start("www.amara.org", use_ssl: true) do |http|
+      Net::HTTP.start("amara.org", use_ssl: true) do |http|
         req["Content-Type"] = "application/json"
         req["X-api-username"] = Amaranth.api_username
         req["X-api-key"] = Amaranth.api_key

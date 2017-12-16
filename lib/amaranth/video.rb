@@ -4,7 +4,7 @@ require "open-uri"
 module Amaranth
   class Video < Struct.new(:id, :title, :description, :duration, :primary_audio_language_code, :thumbnail, :team, :project, :all_urls, :languages)
     def self.all team_slug: nil, project_slug: nil
-      url = "https://www.amara.org/api/videos/?limit=100"
+      url = "https://amara.org/api/videos/?limit=100"
       url += "&team=#{team_slug}" if team_slug
       url += "&project=#{project_slug}" if project_slug
       fetch(url).map do |attributes|
