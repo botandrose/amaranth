@@ -1,5 +1,4 @@
 require "amaranth/request"
-require "open-uri"
 
 module Amaranth
   class Video < Struct.new(:id, :title, :description, :duration, :primary_audio_language_code, :thumbnail, :team, :project, :all_urls, :languages)
@@ -13,7 +12,7 @@ module Amaranth
     end
 
     private_class_method def self.fetch url
-      json = JSON.parse(open(url).read)
+      json = Request.get(url)
       objects = json["objects"]
       next_url = json["meta"]["next"]
       objects += fetch(next_url) if next_url
