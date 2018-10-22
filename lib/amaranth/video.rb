@@ -34,7 +34,7 @@ module Amaranth
     def self.create_or_update_by_video_url video_url, attributes
       Amaranth::Video.create attributes.merge(video_url: video_url)
     rescue Amaranth::RequestError => exception
-      raise unless exception.message.include?("Video already exists")
+      raise unless exception.message.include?("Video already ")
       Amaranth::Video.find_by_video_url(video_url).update(attributes)
     end
 
