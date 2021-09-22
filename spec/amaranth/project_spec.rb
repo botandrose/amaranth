@@ -4,9 +4,9 @@ require "webmock/rspec"
 module Amaranth
   describe Project do
     before do
-      stub_request(:get, "https://amara.org/api/teams/ce-mac-test/projects/")
+      stub_request(:get, "https://amara.org/api/teams/ce-mac-test/projects/?limit=100")
         .to_return(body: <<-JSON)
-          {"meta": {"previous": null, "next": null, "offset": 0, "limit": 20, "total_count": 7},
+          {"meta": {"previous": null, "next": null, "offset": 0, "limit": 100, "total_count": 7},
            "objects":
             [{"name": "Introduction to Complexity",
              "slug": "introduction-to-complexity",
@@ -32,6 +32,35 @@ module Amaranth
         Project.all(team_slug: "ce-mac-test").should == [
           Project.new(name: "Introduction to Complexity", slug: "introduction-to-complexity", team_slug: "ce-mac-test"),
           Project.new(name: "Chaos and Dynamical Systems", slug: "chaos-and-dynamical-systems", team_slug: "ce-mac-test"),
+        ]
+      end
+
+      it "collates multiple pages" do
+        stub_request(:get, "https://amara.org/api/teams/ce-mac-test/projects/?limit=100")
+          .to_return(body: <<-JSON)
+            {
+              "meta": {
+                "next": "https://amara.org/api/teams/ce-mac-test/projects/?offset=2&limit=2"
+              },
+              "objects": [{"name": 1},{"name": 2}]
+            }
+          JSON
+
+        stub_request(:get, "https://amara.org/api/teams/ce-mac-test/projects/?offset=2&limit=2")
+          .to_return(body: <<-JSON)
+            {
+              "meta": {
+                "next": null
+              },
+              "objects": [{"name": 3},{"name": 4}]
+            }
+          JSON
+
+        described_class.all(team_slug: "ce-mac-test").should == [
+          Project.new(name: 1, team_slug: "ce-mac-test"),
+          Project.new(name: 2, team_slug: "ce-mac-test"),
+          Project.new(name: 3, team_slug: "ce-mac-test"),
+          Project.new(name: 4, team_slug: "ce-mac-test"),
         ]
       end
     end
