@@ -1,22 +1,25 @@
-require "amaranth/request"
+require "amaranth/collection"
 
 module Amaranth
-  class Video < Struct.new(:id, :title, :description, :duration, :primary_audio_language_code, :thumbnail, :team, :project, :all_urls, :languages)
+  class Video < Collection
+    field :id
+    field :title
+    field :description
+    field :duration
+    field :primary_audio_language_code
+    field :thumbnail
+    field :team
+    field :project
+    field :all_urls
+    field :languages
+
     def self.all team_slug: nil, project_slug: nil
       url = "https://amara.org/api/videos/?limit=100"
       url += "&team=#{team_slug}" if team_slug
       url += "&project=#{project_slug}" if project_slug
       fetch(url).map do |attributes|
-        new attributes.keep_if { |key, value| members.include? key.to_sym }
+        new attributes.keep_if { |key, value| fields.include? key.to_sym }
       end
-    end
-
-    private_class_method def self.fetch url
-      json = Request.get(url)
-      objects = json["objects"]
-      next_url = json["meta"]["next"]
-      objects += fetch(next_url) if next_url
-      objects
     end
 
     def self.create attributes
@@ -26,7 +29,7 @@ module Amaranth
     def self.find_by_video_url video_url
       if json = Request.get("/api/videos/?video_url=#{video_url}")
         attributes = json["objects"].first
-        new attributes.keep_if { |key, value| members.include? key.to_sym }
+        new attributes.keep_if { |key, value| fields.include? key.to_sym }
       end
     end
 
@@ -37,16 +40,8 @@ module Amaranth
       Amaranth::Video.find_by_video_url(video_url).update(attributes)
     end
 
-    def initialize attributes={}
-      attributes.each do |key, value|
-        self[key] = value
-      end
-    end
-
     def update attributes={}
-      attributes.each do |key, value|
-        self[key] = value
-      end
+      self.attributes = attributes
       save
     end
 
