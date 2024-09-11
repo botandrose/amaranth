@@ -1,5 +1,5 @@
 # Amaranth
-[![Build Status](https://travis-ci.org/botandrose/amaranth.svg)](https://travis-ci.org/botandrose/amaranth)
+[![CI Status](https://github.com/botandrose/amaranth/actions/workflows/ci.yml/badge.svg)](https://github.com/botandrose/amaranth/actions/workflows/ci.yml)
 
 Library for accessing the Amara REST API.
 
