@@ -49,10 +49,10 @@ describe Amaranth::Video do
         .to_return(body: <<-JSON)
           { "meta": {}, "objects": [{"id": 1},{"id": 2}] }
         JSON
-      described_class.all({
+      described_class.all(
         team_slug: "complexity-explorer",
         project_slug: "introduction-to-complexity",
-      }).should == [
+      ).should == [
         Amaranth::Video.new(id: 1),
         Amaranth::Video.new(id: 2),
       ]
