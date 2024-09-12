@@ -57,6 +57,10 @@ module Amaranth
       id.to_s.length > 0
     end
 
+    def fetch_languages
+      Language.all(video_id: id)
+    end
+
     private
 
     READONLY_ATTRIBUTES = %i(all_urls languages)
