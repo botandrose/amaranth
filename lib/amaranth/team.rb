@@ -21,6 +21,10 @@ module Amaranth
     def videos
       Video.all(team_slug: slug)
     end
+
+    def activity type: nil, after: nil
+      Activity.all(team_slug: slug, type: type, after: after)
+    end
   end
 end
 

@@ -47,5 +47,18 @@ describe Amaranth::Team do
       team.videos.should == videos
     end
   end
-end
 
+  describe "#activity" do
+    it "returns the team's activity" do
+      activity = double
+      activity_factory = double
+      stub_const "Amaranth::Activity", activity_factory
+      after = Time.utc(2026, 11, 12)
+
+      activity_factory.should_receive(:all).with(team_slug: "complexity-explorer", type: "version-added", after: after).and_return(activity)
+
+      team = described_class.new(slug: "complexity-explorer")
+      team.activity(type: "version-added", after: after).should == activity
+    end
+  end
+end
